@@ -1,8 +1,8 @@
 import express from "express"
 import upload from "../middlewares/upload.js"
-import { uploadResume } from "../controllers/resumeController.js"
+import { analyzeResume } from "../controllers/resumeController.js"
 
 const router = express.Router()
-router.post("/upload", upload.single("resume") , uploadResume)
+router.post("/analyze", upload.single("resume") , analyzeResume)
 
 export default router;

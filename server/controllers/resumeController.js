@@ -1,28 +1,99 @@
-import fs from "fs"
+import fs from "fs";
 import {PDFParse} from "pdf-parse";
+import { summarizeResume } from "../services/huggingface/summarizer.js";;
+import { cosineSimilarity } from "../services/similarity/cosine.js";
+import { extractSkills } from "../services/skills/extractSkill.js";
+import { generateEmbeddings } from "../services/huggingface/embeddings.js";
+import { calculateATSScore } from "../services/ats/ats.js";
+import { generateFeedback } from "../services/huggingface/feedback.js";
+import { calculateReadiness } from "../services/readiness/readinessScore.js";
 
-export const uploadResume = async (req , res) => {
+export const analyzeResume = async (req, res) => {
+
     try {
-        if(!req.file){
+        if(!req.file?.buffer) {
+           return res.status(400).json({
+            success: false,
+            message: "Please provide the resume file"
+           })
+        }
+        const parser = new PDFParse({
+            data: req.file.buffer
+        });
+        let resumeText;
+        try {
+            const data = await parser.getText();
+            resumeText = data.text?.trim();
+        } finally {
+            await parser.destroy();
+        }
+
+        const { jobDescription } = req.body;
+
+        if(!jobDescription){
             return res.status(400).json({
                 success: false,
-                message: "Please upload a PDF in the resume field"
+                message: "Please provide both resume-text and jobDescription"
             })
         }
-        const parser = new PDFParse({ data: req.file.buffer });
-        const data = await parser.getText();   
-        await parser.destroy()
+
+        // AI Summary
+        const summary = await summarizeResume(resumeText);
+
+        // Embeddings
+        const resumeEmbedding = await generateEmbeddings(resumeText);
+        const jobEmbedding = await generateEmbeddings(jobDescription);
+
+        // Readiness
+        const feedback = await generateFeedback(resumeText, jobDescription);
+
+        // Cosine Similarity
+        const similarity = cosineSimilarity(
+            resumeEmbedding,
+            jobEmbedding
+        );
+
+        // Ats Score
+        const atsScore = calculateATSScore(
+            resumeText,
+            similarity * 100
+        )
+
+        // Skills
+        const resumeSkills = extractSkills(resumeText);
+        const jdSkills = extractSkills(jobDescription);
+
+        const missingSkills = jdSkills.filter(
+            (skill) => !resumeSkills.includes(skill)
+        );
+
+          //calculate readiness score
+
+        const readiness = calculateReadiness(
+            similarity * 100,
+            atsScore,
+            missingSkills,
+            jdSkills
+        )
 
         res.status(200).json({
             success: true,
-            extractedText: data.text
+            summary,
+            matchScore: (similarity * 100).toFixed(2),
+            atsScore,
+            readiness,
+            resumeSkills,
+            jdSkills,
+            missingSkills,
+            feedback   
         });
-        
+
     } catch (error) {
-        console.log("Resume parsing error:", error)
+        console.error(error);
+
         res.status(500).json({
             success: false,
-            message: "Unable to parse pdf"
+            message: "Resume analysis failed",
         });
     }
-}
+};
