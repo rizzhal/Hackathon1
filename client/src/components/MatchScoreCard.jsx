@@ -1,72 +1,128 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { Target, TrendingUp } from "lucide-react";
+
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
 const MatchScoreCard = ({ score }) => {
+  const numericScore = Number(score);
 
-    const numericScore = Number(score);
+  const getStatus = () => {
+    if (numericScore >= 90)
+      return {
+        label: "Excellent Match",
+        color: "text-green-400",
+        badge: "bg-green-500/20 border-green-500/30",
+      };
 
-    const getStatus = () => {
+    if (numericScore >= 75)
+      return {
+        label: "Good Match",
+        color: "text-yellow-400",
+        badge: "bg-yellow-500/20 border-yellow-500/30",
+      };
 
-        if (numericScore >= 90)
-            return {
-                label: "Excellent Match",
-                color: "text-green-500",
-            };
+    if (numericScore >= 60)
+      return {
+        label: "Average Match",
+        color: "text-orange-400",
+        badge: "bg-orange-500/20 border-orange-500/30",
+      };
 
-        if (numericScore >= 75)
-            return {
-                label: "Good Match",
-                color: "text-yellow-500",
-            };
-
-        if (numericScore >= 60)
-            return {
-                label: "Average Match",
-                color: "text-orange-500",
-            };
-
-        return {
-            label: "Needs Improvement",
-            color: "text-red-500",
-        };
+    return {
+      label: "Needs Improvement",
+      color: "text-red-400",
+      badge: "bg-red-500/20 border-red-500/30",
     };
+  };
 
-    const status = getStatus();
+  const status = getStatus();
 
-    return (
-        <Card>
+  return (
+    <motion.div
+      whileHover={{
+        y: -8,
+        scale: 1.02,
+      }}
+      transition={{
+        duration: 0.3,
+      }}
+    >
+      <Card className="group overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl transition-all duration-300 hover:border-violet-500/40 hover:shadow-[0_0_40px_rgba(139,92,246,0.25)]">
 
-            <CardHeader>
+        <CardContent className="p-7">
 
-                <CardTitle>
-                    Match Score
-                </CardTitle>
+          {/* Header */}
 
-            </CardHeader>
+          <div className="flex items-center justify-between">
 
-            <CardContent>
+            <div className="flex items-center gap-3">
 
-                <h1
-                    className={`text-5xl font-bold ${status.color}`}
-                >
-                    {numericScore}%
-                </h1>
+              <div className="rounded-2xl bg-violet-500/20 p-3">
 
-                <Progress
-                    value={numericScore}
-                    className="mt-5"
-                />
+                <Target className="text-violet-400" size={24} />
 
-                <p
-                    className={`mt-3 font-medium ${status.color}`}
-                >
-                    {status.label}
+              </div>
+
+              <div>
+
+                <h3 className="text-lg font-semibold text-white">
+                  Match Score
+                </h3>
+
+                <p className="text-sm text-gray-400">
+                  Resume Compatibility
                 </p>
 
-            </CardContent>
+              </div>
 
-        </Card>
-    );
+            </div>
+
+            <TrendingUp className="text-green-400" />
+
+          </div>
+
+          {/* Score */}
+
+          <div className="mt-8 flex items-end gap-2">
+
+            <h1 className={`text-6xl font-black ${status.color}`}>
+              {numericScore}
+            </h1>
+
+            <span className="mb-2 text-2xl font-bold text-gray-400">
+              %
+            </span>
+
+          </div>
+
+          {/* Progress */}
+
+          <Progress
+            value={numericScore}
+            className="mt-8 h-3 rounded-full bg-white/10"
+          />
+
+          {/* Footer */}
+
+          <div className="mt-6 flex items-center justify-between">
+
+            <span
+              className={`rounded-full border px-4 py-1 text-sm font-medium ${status.badge} ${status.color}`}
+            >
+              {status.label}
+            </span>
+
+            <p className="text-sm text-gray-400">
+              AI Generated
+            </p>
+
+          </div>
+
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
 };
 
 export default MatchScoreCard;

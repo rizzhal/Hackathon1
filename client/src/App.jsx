@@ -1,11 +1,14 @@
-import UploadCard from "./components/UploadCard.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
+
+import { RouterProvider } from "react-router-dom";
+import { Toaster } from "sonner";
+import { router } from "./router";
 
 
 function App () {
   return(
-    <div>Hackathon Project
-      <Dashboard/>
+    <div>
+      <RouterProvider router={router}/>
+      <Toaster richColors position="top-right" closeButton />
     </div>
   )
 }

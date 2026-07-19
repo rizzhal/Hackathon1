@@ -1,90 +1,93 @@
-import AtsCard from '@/components/AtsCard';
-import FeedbackCard from '@/components/FeedbackCard';
-import MatchScoreCard from '@/components/MatchScoreCard';
-import ReadinessCard from '@/components/ReadinessCard';
-import SkillCard from '@/components/SkillCard';
-import SummaryCard from '@/components/SummaryCard';
-import api from '@/services/api';
-import React, { useState } from 'react'
+import { useLocation, Navigate } from "react-router-dom";
 
+import SummaryCard from "@/components/SummaryCard";
+import MatchScoreCard from "@/components/MatchScoreCard";
+import ReadinessCard from "@/components/ReadinessCard";
+import SkillCard from "@/components/SkillCard";
+import FeedbackCard from "@/components/FeedbackCard";
+import AtsCard from "@/components/AtsCard";
 
 const Dashboard = () => {
-    const [resume , setResume] = useState(null);
-    const [jobDescription, setJobDescription] = useState("");
-    const [analysis , setAnalysis] = useState(null)
-    const [loading , setLoading] = useState(false)
+  const { state } = useLocation();
 
+  const analysis = state?.analysis || JSON.parse(sessionStorage.getItem("analysis"));
 
-    const analyzeResume = async () => {
+  // Prevent users from opening /dashboard directly
+  if (!analysis) {
+    return <Navigate to="/" replace />;
+  }
 
-        if(!resume) {
-            return;
-        }
-
-        if(!jobDescription){
-            return;
-        }
-        try {
-            setLoading(true);
-            const formData = new FormData();
-            formData.append("resume" , resume);
-            formData.append("jobDescription" , jobDescription)
-
-            const response = await api.post(
-                "/resume/analyze",
-                formData
-            )
-            console.log(response.data)
-            setAnalysis(response.data)
-
-        } catch (error) {
-            console.error("There is an internal server error" , error);
-        } finally {
-            setLoading(false);
-        }
-    }
   return (
-    <div>
-        <input type="file" 
-        accept='.pdf'
-        onChange={(e) => setResume(e.target.files[0])} />
-        <textarea placeholder='Enter the jobDescription' 
-        value={jobDescription} 
-        onChange={(e) => setJobDescription(e.target.value)}
-        />
-        <button onClick={analyzeResume} 
-        disabled = {loading} >{loading ? "Analyzing" : "Analyze"}</button>
-        
-        {analysis && (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8" >
-        <SummaryCard
-            summary={analysis.summary}
-        />
+    <div className="min-h-screen bg-black text-white px-6 py-24">
 
-        <MatchScoreCard
+      <div className="mx-auto max-w-7xl">
+
+        {/* Heading */}
+
+        <div className="mb-12 text-center">
+
+          <h1 className="text-5xl font-black">
+            Resume Analysis
+          </h1>
+
+          <p className="mt-4 text-gray-400">
+            AI-powered analysis of your resume
+          </p>
+
+        </div>
+
+        {/* Score Cards */}
+
+        <div className="grid gap-6 md:grid-cols-3">
+
+          <MatchScoreCard
             score={analysis.matchScore}
-        />
+          />
 
-        <AtsCard
+          <AtsCard
             score={analysis.atsScore}
-        />
+          />
 
-        <ReadinessCard
+          <ReadinessCard
             score={analysis.readiness}
-        />
+          />
 
-        <SkillCard
+        </div>
+
+        {/* Summary */}
+
+        <div className="mt-8">
+
+          <SummaryCard
+            summary={analysis.summary}
+          />
+
+        </div>
+
+        {/* Skills */}
+
+        <div className="mt-8">
+
+          <SkillCard
             resumeSkills={analysis.resumeSkills}
             missingSkills={analysis.missingSkills}
-        />
+          />
 
-        <FeedbackCard
+        </div>
+
+        {/* Feedback */}
+
+        <div className="mt-8" >
+
+          <FeedbackCard
             feedback={analysis.feedback}
-        />
-    </div>
-)}
-    </div>
-  )
-}
+          />
+        </div>
 
-export default Dashboard
+      </div>
+
+    </div>
+  );
+};
+
+export default Dashboard;
