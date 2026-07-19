@@ -34,7 +34,7 @@ const UploadSection = () => {
       formData.append("jobDescription", jobDescription);
 
       const response = await api.post(
-        "/resume/analyze",
+        "/api/resume/analyze",
         formData
       );
       console.log(response.data);
