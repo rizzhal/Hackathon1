@@ -171,9 +171,9 @@ POST /resume/analyze
 
 **Bishal Barman**
 
-GitHub: https://github.com/yourusername
+GitHub: https://github.com/rizzhal
 
-LinkedIn: https://linkedin.com/in/yourprofile
+LinkedIn: https://linkedin.com/in/bishal-barman-090227299
 
 ---
 
