@@ -59,7 +59,7 @@ const Navbar = () => {
           </a>
 
           <a
-            href="https://github.com/"
+            href="https://github.com/rizzhal/Hackathon1"
             target="_blank"
             className="text-sm text-gray-300 transition hover:text-white"
           >

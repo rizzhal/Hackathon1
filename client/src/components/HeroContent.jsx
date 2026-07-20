@@ -70,7 +70,7 @@ const HeroContent = () => {
         </Link>
 
         <a
-          href="https://github.com/your-github"
+          href="https://github.com/rizzhal/Hackathon1"
           target="_blank"
           rel="noopener noreferrer"
         >
