@@ -53,14 +53,14 @@ const Loading = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
 
-      <div className="absolute h-[450px] w-[450px] rounded-full bg-blue-500/20 blur-[150px]" />
+      <div className="absolute h-112.5 w-112.5 rounded-full bg-blue-500/20 blur-[150px]" />
 
-      <div className="absolute h-[350px] w-[350px] rounded-full bg-violet-500/20 blur-[150px]" />
+      <div className="absolute h-87.5 w-87.5 rounded-full bg-violet-500/20 blur-[150px]" />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative w-[520px] rounded-3xl border border-white/10 bg-white/5 p-10 backdrop-blur-2xl"
+        className="relative w-130 rounded-3xl border border-white/10 bg-white/5 p-10 backdrop-blur-2xl"
       >
         <h1 className="text-center text-4xl font-black text-white">
           ResumeAI
@@ -99,7 +99,7 @@ const Loading = () => {
               animate={{
                 width: `${progress}%`,
               }}
-              className="h-full rounded-full bg-gradient-to-r from-blue-500 via-violet-500 to-cyan-400"
+              className="h-full rounded-full bg-linear-to-r from-blue-500 via-violet-500 to-cyan-400"
             />
           </div>
         </div>
