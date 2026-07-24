@@ -48,7 +48,7 @@ const AtsCard = ({ score }) => {
         duration: 0.3,
       }}
     >
-      <Card className="group overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-500/40 hover:shadow-[0_0_40px_rgba(59,130,246,0.25)]">
+      <Card className="group overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-white/10 to-white/5 backdrop-blur-xl transition-all duration-300 hover:border-blue-500/40 hover:shadow-[0_0_40px_rgba(59,130,246,0.25)]">
 
         <CardContent className="p-7">
 

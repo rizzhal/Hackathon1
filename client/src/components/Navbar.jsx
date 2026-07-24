@@ -18,7 +18,7 @@ const Navbar = () => {
           to="/"
           className="flex items-center gap-3"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-violet-600">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-r from-blue-600 to-violet-600">
             <Sparkles className="h-5 w-5 text-white" />
           </div>
 

@@ -144,7 +144,7 @@ const UploadSection = () => {
             <button
               onClick={handleAnalyze}
               disabled={loading}
-              className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 px-10 py-4 text-lg font-semibold text-white transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-70"
+              className="flex items-center gap-3 rounded-xl bg-linear-to-r from-blue-600 via-violet-600 to-purple-600 px-10 py-4 text-lg font-semibold text-white transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {loading ? (
                 <>
